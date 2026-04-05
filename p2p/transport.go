@@ -1,8 +1,12 @@
 // Package p2p
 package p2p
 
+// import "net"
+
 // Peer is an interface that represents the reomte node.
-type Peer interface{}
+type Peer interface {
+	// net.Conn
+}
 
 // Transport is anything that handles the communincation
 // between the nodes in the network. This can be of the
