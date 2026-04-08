@@ -2,6 +2,7 @@ package p2p
 
 import (
 	"bytes"
+	"io"
 	"testing"
 )
 
@@ -24,10 +25,21 @@ func TestStore(t *testing.T) {
 		PathTransformFunc: CASPathTransformFunc,
 	}
 	s := NewStore(opts)
+	key := "momsspecials"
+	data := []byte("some jpg bytes")
 
-	data := bytes.NewReader([]byte("some jpg bytes"))
-
-	if err := s.writeStream("myspecialpicture", data); err != nil {
+	if err := s.writeStream(key, bytes.NewReader(data)); err != nil {
 		t.Error(err)
+	}
+
+	r, err := s.Read(key)
+	if err != nil {
+		t.Error(err)
+	}
+
+	b, _ := io.ReadAll(r)
+
+	if string(b) != string(data) {
+		t.Errorf("want %s have %s\n", data, b)
 	}
 }
